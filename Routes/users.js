@@ -1,5 +1,7 @@
 import express from 'express';
 import bcrypt from "bcrypt";
+import nodemailer from 'nodemailer';
+import  uniqueString from 'unique-string';
 import {getUserByMail, genPassword, createUser} from '../helper.js'
 
 const router = express.Router();
@@ -34,25 +36,52 @@ router.post("/signup",async(req,res)=> {
 
 //Login
 router.post("/login", async(req,res)=> {
-    const{email,password} = req.body;
-    console.log(email,password);
+    const{email} = req.body;
+    // console.log(email);
     
     const userFromDB = await getUserByMail(email);
-    console.log(userFromDB);
+    // console.log(userFromDB);
     if(!userFromDB){
         res.status(400).send({error: "Invalid Email or Password"})
         return;
     }
+    const EMAIL    = process.env.EMAIL;
+    const PASSWORD = process.env.PASSWORD
 
-    const storedDBPassword = userFromDB.password;
-    //To compare entered password and DB password are same
-    const isPasswordMatch = await bcrypt.compare(password,storedDBPassword);
-    if(!isPasswordMatch){
-        res.status(400).send({error: "Invalid Email or Password"})
-        return;
+    // const storedDBPassword = userFromDB.password;
+    // //To compare entered password and DB password are same
+    // const isPasswordMatch = await bcrypt.compare(password,storedDBPassword);
+    // if(!isPasswordMatch){
+    //     res.status(400).send({error: "Invalid Email or Password"})
+    //     return;
+    // }
+
+    let config = {
+        service : 'gmail',
+        auth : {
+            user: EMAIL,
+            pass: PASSWORD
+        }
     }
+
+    let transporter = nodemailer.createTransport(config);
+
+    let message = {
+        from : EMAIL,
+        to : email,
+        subject: "Password Reset",
+        text : `CODE: ${uniqueString()}`
+    }
+
+    transporter.sendMail(message).then(() => {
+        return res.status(201).send({
+            message: "We've send the Code to your email. Please check and Enter correctly"
+        })
+    }).catch(error => {
+        return res.status(500).send({ error })
+    })
     
-    res.send({message: "Login Successfully"});
+    // res.send({message: uniqueString()});
 })
 
 
