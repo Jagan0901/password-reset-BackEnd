@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from "bcrypt";
 import nodemailer from 'nodemailer';
 import  uniqueString from 'unique-string';
-import {getUserByMail, genPassword, createUser} from '../helper.js'
+import {getUserByMail, genPassword, createUser, createCode} from '../helper.js'
 
 const router = express.Router();
 
@@ -55,6 +55,9 @@ router.post("/email", async(req,res)=> {
     //     res.status(400).send({error: "Invalid Email or Password"})
     //     return;
     // }
+    const uniqueCode = uniqueString();
+    const code = await createCode(uniqueCode);
+    
 
     let config = {
         service : 'gmail',
@@ -70,7 +73,7 @@ router.post("/email", async(req,res)=> {
         from : EMAIL,
         to : email,
         subject: "Password Reset",
-        text : `CODE: ${uniqueString()}`
+        text : `CODE: ${uniqueCode}`
     }
 
     transporter.sendMail(message).then(() => {

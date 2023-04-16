@@ -26,3 +26,11 @@ export async function  createUser(email,hashedPassword){
       .insertOne({email: email, password: hashedPassword})
       
 }
+
+export async function  createCode(uniqueCode){
+  return await client
+    .db("Password-reset")
+    .collection("codes")
+    .insertOne({code: uniqueCode})
+    
+}
