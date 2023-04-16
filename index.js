@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from 'express';
 import * as dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
@@ -7,6 +8,8 @@ import { userRouter } from './Routes/users.js';
 dotenv.config();
 
 const app = express();
+
+app.use(cors()); 
 
 app.use(express.json());
 
