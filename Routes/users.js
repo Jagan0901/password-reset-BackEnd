@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from "bcrypt";
 import nodemailer from 'nodemailer';
 import  uniqueString from 'unique-string';
-import {getUserByMail, genPassword, createUser, createCode} from '../helper.js'
+import {getUserByMail, genPassword, createUser, createCode, getCode} from '../helper.js'
 
 const router = express.Router();
 
@@ -83,10 +83,17 @@ router.post("/email", async(req,res)=> {
     }).catch(error => {
         return res.status(500).send({ error:error })
     })
-    
-    // res.send({message: uniqueString()});
 })
 
+router.post("/verify", async(req,res)=>{
+    const{code} = req.body;
+    const isCodeExists = await getCode(code);
+    if(!isCodeExists){
+        res.status(400).send({error:"Invalid Code.Please check it once and enter"});
+        return;
+    }
+    res.send({message: 'Verified Successfully'})
+})
 
 
 

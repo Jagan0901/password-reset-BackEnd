@@ -31,6 +31,12 @@ export async function  createCode(uniqueCode){
   return await client
     .db("Password-reset")
     .collection("codes")
-    .insertOne({code: uniqueCode})
-    
+    .insertOne({code: uniqueCode})   
+}
+
+export async function  getCode(code){
+  return await client
+    .db("Password-reset")
+    .collection("codes")
+    .findOne({code: code})   
 }
