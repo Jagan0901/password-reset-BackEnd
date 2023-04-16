@@ -92,7 +92,7 @@ router.post("/verify", async(req,res)=>{
         res.status(400).send({error:"Invalid Code .Please check it once and enter"});
         return;
     }
-    res.send({message: 'Verified Successfully'})
+    res.send({message: 'Code Verified Successfully'})
 })
 
 
