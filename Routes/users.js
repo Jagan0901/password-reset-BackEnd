@@ -78,7 +78,7 @@ router.post("/email", async(req,res)=> {
             message: "We've send the Code to your email. Please check and Enter correctly"
         })
     }).catch(error => {
-        return res.status(500).send({ error })
+        return res.status(500).send({ error:error })
     })
     
     // res.send({message: uniqueString()});
