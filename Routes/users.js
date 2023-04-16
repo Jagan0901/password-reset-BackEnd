@@ -8,7 +8,7 @@ router.post("/signup",async(req,res)=> {
     const {email,password} = req.body;
     console.log(email,password);
 
-    //To set Email Pattern.
+    //To set Email Pattern
     if(!/^[\w]{1,}[\w.+-]{0,}@[\w-]{2,}([.][a-zA-Z]{2,}|[.][\w-]{2,}[.][a-zA-Z]{2,})$/g.test(email)){
         res.status(400).send({error: "Invalid Email Pattern"})
         return;
