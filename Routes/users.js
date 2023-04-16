@@ -89,7 +89,7 @@ router.post("/verify", async(req,res)=>{
     const{code} = req.body;
     const isCodeExists = await getCode(code);
     if(!isCodeExists){
-        res.status(400).send({error:"Invalid Code.Please check it once and enter"});
+        res.status(400).send({error:"Invalid Code .Please check it once and enter"});
         return;
     }
     res.send({message: 'Verified Successfully'})
