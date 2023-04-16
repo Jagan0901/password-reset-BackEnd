@@ -25,7 +25,7 @@ async function createConnection(){
 export const client = await createConnection();
 
 app.get("/", async (req,res)=>{
-    console.log("Hi There!!!")
+    res.send("Hi There!!!")
 });
 
 app.use("/users",userRouter);
